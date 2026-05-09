@@ -552,23 +552,23 @@ declare quaternion: ((x: number, y: number, z: number, s: number) -> quaternion)
 ---------------------------
 
 declare string: {
-  byte: (s: string, i: number?, j: number?) -> ...number, -- builtin
-  char: (...number) -> string, -- builtin
-  find: (s: string, pattern: string, init: number?, plain: boolean?) -> (number?, number?, ...string), -- builtin, magic type
-  format: (formatstring: string, ...any) -> string, -- builtin, magic type
-  gmatch: (s: string, pattern: string) -> () -> ...string, -- builtin, magic type
-  gsub: (s: string, pattern: string, repl: string | { [string]: string } | (...string) -> string, maxn: number?) -> (string, number), -- builtin
-  len: (s: string) -> number, -- builtin
-  lower: (s: string) -> string, -- builtin
-  match: (s: string, pattern: string, init: number?) -> ...string, -- builtin, magic type
-  pack: (fmt: string, ...any) -> string, -- builtin
-  packsize: (fmt: string) -> number, -- builtin
-  rep: (s: string, n: number) -> string, -- builtin
-  reverse: (s: string) -> string, -- builtin
-  split: (s: string, separator: string?) -> {string}, -- builtin
-  sub: (s: string, i: number, j: number?) -> string, -- builtin
-  unpack: (fmt: string, s: string, init: number?) -> ...any, -- builtin
-  upper: (s: string) -> string, -- builtin
+  byte: @checked (s: string, i: number?, j: number?) -> ...number,
+  char: @checked (...number) -> string,
+  find: @checked (s: string, pattern: string, init: number?, plain: boolean?) -> (number?, number?, ...string), -- magic type
+  format: @checked (formatstring: string, ...any) -> string, -- magic type
+  gmatch: @checked (s: string, pattern: string) -> () -> ...string, -- magic type
+  gsub: (s: string, pattern: string, repl: string | { [string]: string } | (...string) -> string, maxn: number?) -> (string, number),
+  len: @checked (s: string) -> number,
+  lower: @checked (s: string) -> string,
+  match: @checked (s: string, pattern: string, init: number?) -> ...string, -- magic type
+  pack: (fmt: string, ...any) -> string,
+  packsize: @checked (fmt: string) -> number,
+  rep: @checked (s: string, n: number) -> string,
+  reverse: @checked (s: string) -> string,
+  split: @checked (s: string, separator: string?) -> {string},
+  sub: @checked (s: string, i: number, j: number?) -> string,
+  unpack: @checked (fmt: string, s: string, init: number?) -> ...any,
+  upper: @checked (s: string) -> string,
 }
 
 --]]
