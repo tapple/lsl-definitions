@@ -188,7 +188,7 @@ class SLuaFunction(SLuaFunctionBase):
     @property
     def annotation_string(self) -> str:
         annotation = ""
-        if self.checked:
+        if self.checked_type:
             annotation += "@checked "
         if self.deprecated is not None:
             params: list[str] = []
@@ -371,9 +371,9 @@ class SLuaModule:
         """
         if self.callable is None:
             return  # no issue
-        self.callable.checked = False
+        self.callable.checked_type = False
         for func in self.functions:
-            func.checked = False
+            func.checked_type = False
 
     def write_luau_def(self, f: TextIO) -> None:
         # self.workaround_annotated_callable_bug()
