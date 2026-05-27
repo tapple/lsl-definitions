@@ -188,7 +188,7 @@ class SLuaFunction(SLuaFunctionBase):
     @property
     def annotation_string(self) -> str:
         annotation = ""
-        if self.checked_type:
+        if self.typechecker_flags.checked:
             annotation += "@checked "
         if self.deprecated is not None:
             params: list[str] = []
@@ -311,7 +311,7 @@ class SLuaClassDeclaration:
         https://github.com/luau-lang/luau/issues/2384
         """
         for func in self.methods:
-            func.checked_type = False
+            func.typechecker_flags.checked = False
 
     def _write_extern_type_def(self, f: TextIO) -> None:
         f.write(f"declare extern type {self.name} with\n")
@@ -380,9 +380,9 @@ class SLuaModule:
         """
         if self.callable is None:
             return  # no issue
-        self.callable.checked_type = False
+        self.callable.typechecker_flags.checked = False
         for func in self.functions:
-            func.checked_type = False
+            func.typechecker_flags.checked = False
 
     def write_luau_def(self, f: TextIO) -> None:
         self._workaround_annotated_callable_bug()
@@ -706,7 +706,7 @@ class SLuaDefinitions:
                 type_parameters=["T"],
                 parameters=parameters,
                 return_type="T",
-                checked_type=True,
+                typechecker_flags=SLuaTypecheckerFlags(checked=True),
             )
 
         spec = expand_spp_builder(lsl)

@@ -306,7 +306,7 @@ declare getfenv: nil
 -- declare function getmetatable<T>(obj: T): getmetatable<T> -- builtin
 declare function ipairs<V>(tab: {V}): (({V}, number) -> (number?, V), {V}, number)
 declare loadstring: nil
-declare function newproxy(mt: boolean?): any
+declare @checked function newproxy(mt: boolean?): any
 -- declare function next<K, V>(t: {[K]: V}, i: K?): (K?, V) -- builtin
 -- declare function pairs<K, V>(t: {[K]: V}): (({[K]: V}, K?) -> (K?, V), {[K]: V}, K) -- builtin
 declare function pcall<A..., R...>(f: (A...) -> R..., ...: A...): (boolean, R...)
@@ -315,7 +315,7 @@ declare function rawequal<T1, T2>(a: T1, b: T2): boolean
 declare function rawget<K, V>(t: {[K]: V}, k: K): V?
 declare function rawlen<K, V>(t: {[K]: V} | string): number
 declare function rawset<K, V>(t: {[K]: V}, k: K, v: V): {[K]: V}
--- declare function require(target: any): any -- magic type
+-- declare @checked function require(target: any): any -- magic type
 -- declare function select<A...>(i: string | number, ...: A...): ...any -- magic type
 declare setfenv: nil
 -- declare function setmetatable<T, MT>(t: T, mt: MT): setmetatable<T, MT> -- builtin, magic type
@@ -360,32 +360,32 @@ declare bit32: {
 ---------------------------
 
 declare buffer: {
-  create: (size: number) -> buffer,
-  fromstring: (str: string) -> buffer,
-  tostring: (b: buffer) -> string,
-  readi8: (b: buffer, offset: number) -> number,
-  readu8: (b: buffer, offset: number) -> number,
-  readi16: (b: buffer, offset: number) -> number,
-  readu16: (b: buffer, offset: number) -> number,
-  readi32: (b: buffer, offset: number) -> number,
-  readu32: (b: buffer, offset: number) -> number,
-  readf32: (b: buffer, offset: number) -> number,
-  readf64: (b: buffer, offset: number) -> number,
-  writei8: (b: buffer, offset: number, value: number) -> (),
-  writeu8: (b: buffer, offset: number, value: number) -> (),
-  writei16: (b: buffer, offset: number, value: number) -> (),
-  writeu16: (b: buffer, offset: number, value: number) -> (),
-  writei32: (b: buffer, offset: number, value: number) -> (),
-  writeu32: (b: buffer, offset: number, value: number) -> (),
-  writef32: (b: buffer, offset: number, value: number) -> (),
-  writef64: (b: buffer, offset: number, value: number) -> (),
-  readstring: (b: buffer, offset: number, count: number) -> string,
-  writestring: (b: buffer, offset: number, value: string, count: number?) -> (),
-  len: (b: buffer) -> number,
-  copy: (target: buffer, targetOffset: number, source: buffer, sourceOffset: number?, count: number?) -> (),
-  fill: (b: buffer, offset: number, value: number, count: number?) -> (),
-  readbits: (b: buffer, bitOffset: number, bitCount: number) -> number,
-  writebits: (b: buffer, bitOffset: number, bitCount: number, value: number) -> (),
+  create: @checked (size: number) -> buffer,
+  fromstring: @checked (str: string) -> buffer,
+  tostring: @checked (b: buffer) -> string,
+  readi8: @checked (b: buffer, offset: number) -> number,
+  readu8: @checked (b: buffer, offset: number) -> number,
+  readi16: @checked (b: buffer, offset: number) -> number,
+  readu16: @checked (b: buffer, offset: number) -> number,
+  readi32: @checked (b: buffer, offset: number) -> number,
+  readu32: @checked (b: buffer, offset: number) -> number,
+  readf32: @checked (b: buffer, offset: number) -> number,
+  readf64: @checked (b: buffer, offset: number) -> number,
+  writei8: @checked (b: buffer, offset: number, value: number) -> (),
+  writeu8: @checked (b: buffer, offset: number, value: number) -> (),
+  writei16: @checked (b: buffer, offset: number, value: number) -> (),
+  writeu16: @checked (b: buffer, offset: number, value: number) -> (),
+  writei32: @checked (b: buffer, offset: number, value: number) -> (),
+  writeu32: @checked (b: buffer, offset: number, value: number) -> (),
+  writef32: @checked (b: buffer, offset: number, value: number) -> (),
+  writef64: @checked (b: buffer, offset: number, value: number) -> (),
+  readstring: @checked (b: buffer, offset: number, count: number) -> string,
+  writestring: @checked (b: buffer, offset: number, value: string, count: number?) -> (),
+  len: @checked (b: buffer) -> number,
+  copy: @checked (target: buffer, targetOffset: number, source: buffer, sourceOffset: number?, count: number?) -> (),
+  fill: @checked (b: buffer, offset: number, value: number, count: number?) -> (),
+  readbits: @checked (b: buffer, bitOffset: number, bitCount: number) -> number,
+  writebits: @checked (b: buffer, bitOffset: number, bitCount: number, value: number) -> (),
 }
 
 
@@ -397,11 +397,11 @@ declare coroutine: {
   create: (f: (...any) -> ...any) -> thread,
   resume: (co: thread, ...any) -> (boolean, ...any),
   running: () -> thread?,
-  status: (co: thread) -> "running" | "suspended" | "normal" | "dead",
+  status: @checked (co: thread) -> "running" | "suspended" | "normal" | "dead",
   wrap: (f: (...any) -> ...any) -> (...any) -> ...any,
   yield: (...any) -> ...any,
   isyieldable: () -> boolean,
-  close: (co: thread) -> (boolean, string?),
+  close: @checked (co: thread) -> (boolean, string?),
 }
 
 
@@ -552,23 +552,23 @@ declare quaternion: ((x: number, y: number, z: number, s: number) -> quaternion)
 ---------------------------
 
 declare string: {
-  byte: @checked (s: string, i: number?, j: number?) -> ...number,
-  char: @checked (...number) -> string,
-  find: @checked (s: string, pattern: string, init: number?, plain: boolean?) -> (number?, number?, ...string), -- magic type
-  format: @checked (formatstring: string, ...any) -> string, -- magic type
-  gmatch: @checked (s: string, pattern: string) -> () -> ...string, -- magic type
-  gsub: (s: string, pattern: string, repl: string | { [string]: string } | (...string) -> string, maxn: number?) -> (string, number),
-  len: @checked (s: string) -> number,
-  lower: @checked (s: string) -> string,
-  match: @checked (s: string, pattern: string, init: number?) -> ...string, -- magic type
-  pack: (fmt: string, ...any) -> string,
-  packsize: @checked (fmt: string) -> number,
-  rep: @checked (s: string, n: number) -> string,
-  reverse: @checked (s: string) -> string,
-  split: @checked (s: string, separator: string?) -> {string},
-  sub: @checked (s: string, i: number, j: number?) -> string,
-  unpack: @checked (fmt: string, s: string, init: number?) -> ...any,
-  upper: @checked (s: string) -> string,
+  byte: @checked (s: string, i: number?, j: number?) -> ...number, -- builtin
+  char: @checked (...number) -> string, -- builtin
+  find: @checked (s: string, pattern: string, init: number?, plain: boolean?) -> (number?, number?, ...string), -- builtin, magic type
+  format: @checked (formatstring: string, ...any) -> string, -- builtin, magic type
+  gmatch: @checked (s: string, pattern: string) -> () -> ...string, -- builtin, magic type
+  gsub: (s: string, pattern: string, repl: string | { [string]: string } | (...string) -> string, maxn: number?) -> (string, number), -- builtin
+  len: @checked (s: string) -> number, -- builtin
+  lower: @checked (s: string) -> string, -- builtin
+  match: @checked (s: string, pattern: string, init: number?) -> ...string, -- builtin, magic type
+  pack: (fmt: string, ...any) -> string, -- builtin
+  packsize: @checked (fmt: string) -> number, -- builtin
+  rep: @checked (s: string, n: number) -> string, -- builtin
+  reverse: @checked (s: string) -> string, -- builtin
+  split: @checked (s: string, separator: string?) -> {string}, -- builtin
+  sub: @checked (s: string, i: number, j: number?) -> string, -- builtin
+  unpack: @checked (fmt: string, s: string, init: number?) -> ...any, -- builtin
+  upper: @checked (s: string) -> string, -- builtin
 }
 
 --]]
@@ -608,11 +608,11 @@ declare table: {
 
 declare utf8: {
   charpattern: string,
-  char: (...number) -> string,
-  codes: (s: string) -> ((string, number) -> (number, number), string, number),
-  codepoint: (s: string, i: number?, j: number?) -> ...number,
-  len: (s: string, i: number?, j: number?) -> (number?, number?),
-  offset: (s: string, n: number, i: number?) -> number?,
+  char: @checked (...number) -> string,
+  codes: @checked (s: string) -> ((string, number) -> (number, number), string, number),
+  codepoint: @checked (s: string, i: number?, j: number?) -> ...number,
+  len: @checked (s: string, i: number?, j: number?) -> (number?, number?),
+  offset: @checked (s: string, n: number, i: number?) -> number?,
 }
 
 
