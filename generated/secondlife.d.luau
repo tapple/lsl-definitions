@@ -61,13 +61,13 @@ export type DateTypeArg = {
 export type DateTypeResult = {
   year: number,
   month: number,
+  wday: number,
+  yday: number,
   day: number,
-  hour: number?,
-  min: number?,
-  sec: number?,
-  wday: number?,
-  yday: number?,
-  isdst: boolean?,
+  hour: number,
+  min: number,
+  sec: number,
+  isdst: boolean,
 }
 type LLJsonEncodeOptions = {
   tight: boolean?,
@@ -394,12 +394,12 @@ declare buffer: {
 ---------------------------
 
 declare coroutine: {
-  create: (f: (...any) -> ...any) -> thread,
-  resume: (co: thread, ...any) -> (boolean, ...any),
+  create: <A..., R...>(f: (A...) -> R...) -> thread,
+  resume: <A..., R...>(co: thread, A...) -> (boolean, R...),
   running: () -> thread?,
   status: @checked (co: thread) -> "running" | "suspended" | "normal" | "dead",
-  wrap: (f: (...any) -> ...any) -> (...any) -> ...any,
-  yield: (...any) -> ...any,
+  wrap: <A..., R...>(f: (A...) -> R...) -> (A...) -> R...,
+  yield: <A..., R...>(A...) -> R...,
   isyieldable: () -> boolean,
   close: @checked (co: thread) -> (boolean, string?),
 }
@@ -536,12 +536,12 @@ declare quaternion: ((x: number, y: number, z: number, s: number) -> quaternion)
   toup: (q: quaternion) -> vector,
 }
 
---[[ commented out to avoid shadowing magic type functions find, format, gmatch, and match
 
 ---------------------------
 -- Global Table: string
 ---------------------------
 
+--[[ commented out to avoid shadowing magic type functions find, format, gmatch, and match
 declare string: {
   byte: @checked (src: string, start_index: number?, end_index: number?) -> ...number, -- builtin
   char: @checked (...number) -> string, -- builtin
@@ -561,8 +561,8 @@ declare string: {
   unpack: @checked (format_string: string, src: string, start: number?) -> ...any, -- builtin
   upper: @checked (src: string) -> string, -- builtin
 }
-
 --]]
+
 
 ---------------------------
 -- Global Table: table
