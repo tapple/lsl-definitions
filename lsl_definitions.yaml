@@ -12585,7 +12585,7 @@ functions:
           or an HTTPRequestParams dictionary.
         type: list
         param-semantics: HTTPRequestParam
-        ruleset: http-params
+        ruleset: http-request-params
     - body:
         tooltip: String contents of the request body.
         type: string
@@ -18646,7 +18646,7 @@ builder-rulesets:
           - [ asset, sound ]
           - [ float, volume ]
 
-  http-params:
+  http-request-params:
     type: table
     enum: HTTPRequestParam
     filler-tokens: [http]
@@ -18669,5 +18669,5 @@ builder-rulesets:
     enum: PrimMediaParam
     lua-module: llprim
     lua-fn: setMedia
-    lua-type: MediaParams
+    lua-type: PrimMediaParams
     dispatch-fn: SetLinkMedia
