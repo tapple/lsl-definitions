@@ -40,9 +40,7 @@ end
 
 
 export type rotation = quaternion
-export type LSLTypes = string | number | vector | uuid | quaternion
-export type LSLReadableTypes = string | number | vector | uuid | quaternion | boolean
-export type list = {read LSLReadableTypes}
+export type list = {read string | number | vector | uuid | quaternion | boolean}
 type LLDetectedEventName = "collision" | "collision_end" | "collision_start" | "final_damage" | "on_damage" | "sensor" | "touch" | "touch_end" | "touch_start"
 type LLNonDetectedEventName = "at_rot_target" | "at_target" | "attach" | "changed" | "control" | "dataserver" | "email" | "experience_permissions" | "experience_permissions_denied" | "game_control" | "http_request" | "http_response" | "land_collision" | "land_collision_end" | "land_collision_start" | "link_message" | "linkset_data" | "listen" | "money" | "moving_end" | "moving_start" | "no_sensor" | "not_at_rot_target" | "not_at_target" | "object_rez" | "on_death" | "on_rez" | "path_update" | "remote_data" | "run_time_permissions" | "timer" | "transaction_result"
 type LLEventName = LLDetectedEventName | LLNonDetectedEventName
@@ -987,7 +985,7 @@ declare ll: {
   List2Rot: @[deprecated {use='[]'}](src: list, index: number) -> quaternion,
   List2String: @[deprecated {reason="Use '[]' and 'tostring' instead."}](src: list, index: number) -> string,
   List2Vector: @[deprecated {use='[]'}](src: list, index: number) -> vector,
-  ListFindList: @[deprecated {use='table.find', reason='Prefer dictionaries or single-item searches.'}](src: lt, test: list) -> number?,
+  ListFindList: @[deprecated {use='table.find', reason='Prefer dictionaries or single-item searches.'}](src: list, test: list) -> number?,
   ListFindListNext: @[deprecated {use='table.find', reason='Prefer dictionaries or single-item searches.'}](src: list, test: list, instance: number) -> number?,
   ListFindStrided: @[deprecated {reason='Prefer dictionary lookups over strided list searches.'}](src: list, test: list, start_index: number, end_index: number, stride: number) -> number?,
   ListInsertList: @[deprecated {use='table.insert', reason='Unnecessary table copying. Fastcall.'}]<T>(dest: {T}, src: {T}, start: number) -> {T},
